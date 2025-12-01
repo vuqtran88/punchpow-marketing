@@ -108,23 +108,18 @@
     }
 
     main {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      display: flex;
+      flex-direction: column;
       gap: 26px;
-      align-items: center;
     }
 
+    /* keep the header tweak, just remove the main override */
     @media (max-width: 780px) {
-      main {
-        grid-template-columns: minmax(0, 1fr);
-      }
-
       header {
         flex-direction: column;
         align-items: flex-start;
       }
     }
-
     .eyebrow {
       font-size: 0.75rem;
       text-transform: uppercase;
@@ -336,15 +331,24 @@
       gap: 10px;
     }
     /* Gallery styles */
+    /* Section sizing: give gallery similar vertical room as feature section */
     .gallery-section {
       margin-top: 28px;
+      min-height: 360px; /* provides room similar to the features area */
+      display: flex;
+      flex-direction: column;
     }
 
     .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      display: flex;
       gap: 12px;
       margin-top: 14px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 6px;
+      scroll-snap-type: x proximity;
+      align-items: center; /* vertically center items within the section */
+      flex: 1 1 auto;
     }
 
     .gallery-item {
@@ -356,6 +360,8 @@
       align-items: center;
       justify-content: center;
       padding: 6px;
+      flex: 0 0 260px; /* fixed item width so items lay out horizontally */
+      scroll-snap-align: start;
     }
 
     .gallery-item img {
@@ -363,6 +369,21 @@
       height: auto;
       display: block;
       object-fit: contain;
+    }
+
+    /* Make images respect the gallery height: limit image max-height so items don't overflow */
+    .gallery-item img {
+      max-height: calc(360px - 28px); /* section min-height minus paddings */
+    }
+
+    /* thin horizontal scrollbar styling for WebKit */
+    .gallery-grid::-webkit-scrollbar {
+      height: 9px;
+    }
+
+    .gallery-grid::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.06);
+      border-radius: 6px;
     }
   </style>
 </head>
@@ -416,6 +437,8 @@
           <div id="gallery" class="gallery-grid" aria-live="polite"></div>
         </section>
       </div>
+
+    </main>
 
     <section>
       <h2>Made for real training sessions.</h2>
