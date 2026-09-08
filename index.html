@@ -2,23 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>PunchPOW – Boxing & Kickboxing Timer</title>
+  <title>PunchPOW – AI Combat Cornerman & Boxing Round Timer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta
     name="description"
-    content="PunchPOW is a clean, focused round timer and workout planner for boxing, kickboxing, and HIIT training on iPhone and iPad."
+    content="PunchPOW 2.0 is the smart boxing timer and interactive audio cornerman for iPhone & iPad. Real-time dynamic combo callouts, 6 coach personas, hands-free Siri voice control, and custom workout planning."
   />
 
   <style>
     :root {
-      --bg: #000000;
-      --surface: #111111;
-      --surface-soft: #181818;
-      --border-subtle: #2a2a2a;
-      --text: #f5f5f5;
-      --text-muted: #a1a1a7;
-      --accent: #6fa8f0; /* subtle blue */
-      --accent-soft: rgba(111, 168, 240, 0.12);
+      --bg: #090a0f;
+      --bg-gradient: radial-gradient(circle at 50% -10%, rgba(255, 204, 0, 0.12) 0%, rgba(59, 130, 246, 0.06) 40%, rgba(9, 10, 15, 1) 85%);
+      --surface: #12141c;
+      --surface-soft: #1a1d28;
+      --surface-glass: rgba(26, 29, 40, 0.7);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(255, 204, 0, 0.35);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-gold: #ffcc00;
+      --accent-blue: #3b82f6;
+      --accent-emerald: #10b981;
+      --radius-sm: 10px;
       --radius-lg: 18px;
       --radius-xl: 26px;
     }
@@ -30,12 +35,14 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
         system-ui, sans-serif;
-      background-color: var(--bg);
+      background: var(--bg);
+      background-image: var(--bg-gradient);
+      background-attachment: fixed;
       color: var(--text);
       -webkit-font-smoothing: antialiased;
-      line-height: 1.5;
+      line-height: 1.55;
     }
 
     a {
@@ -48,36 +55,36 @@
     }
 
     .page {
-      max-width: 900px;
+      max-width: 960px;
       margin: 0 auto;
-      padding: 28px 20px 56px;
+      padding: 32px 24px 64px;
     }
 
     header {
-      display:block;
+      display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      margin-bottom: 25px;
+      margin-bottom: 36px;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
     .brand-mark {
-      width: 34px;
-      height: 34px;
-      border-radius: 12px;
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
       background-color: var(--surface-soft);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 700;
-      font-size: 0.9rem;
       overflow: hidden;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border-subtle);
     }
 
     .brand-mark img {
@@ -88,303 +95,423 @@
     }
 
     .brand-text-main {
-      font-weight: 600;
-      letter-spacing: -0.03em;
-      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      font-size: 1.18rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .brand-version-badge {
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: var(--accent-gold);
+      color: #000;
+      letter-spacing: 0.05em;
     }
 
     .brand-text-sub {
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
     }
 
     .chip {
-      padding: 5px 10px;
+      padding: 6px 14px;
       border-radius: 999px;
       border: 1px solid var(--border-subtle);
-      font-size: 0.78rem;
+      background: rgba(255, 255, 255, 0.04);
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      backdrop-filter: blur(8px);
       white-space: nowrap;
-      width: fit-content;
-      margin-top: 10px;
     }
 
-    main {
-      display: flex;
-      flex-direction: column;
-      gap: 26px;
-    }
-
-    /* keep the header tweak, just remove the main override */
-    @media (max-width: 780px) {
+    @media (max-width: 640px) {
       header {
         flex-direction: column;
         align-items: flex-start;
+        gap: 12px;
       }
     }
-    .eyebrow {
-      font-size: 0.75rem;
+
+    /* Hero Section */
+    .hero {
+      margin-bottom: 40px;
+    }
+
+    .eyebrow-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.74rem;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--text-muted);
-      margin-bottom: 8px;
+      letter-spacing: 0.14em;
+      color: var(--accent-gold);
+      background: rgba(255, 204, 0, 0.12);
+      border: 1px solid rgba(255, 204, 0, 0.25);
+      padding: 5px 12px;
+      border-radius: 999px;
+      margin-bottom: 14px;
     }
 
     h1 {
-      font-size: clamp(2.0rem, 3.4vw, 2.4rem);
+      font-size: clamp(2.2rem, 4.8vw, 3.2rem);
+      font-weight: 800;
       letter-spacing: -0.04em;
-      line-height: 1.1;
-      margin-bottom: 10px;
+      line-height: 1.12;
+      margin-bottom: 16px;
     }
 
     .tagline-accent {
-      color: var(--accent);
+      background: linear-gradient(120deg, #ffcc00 10%, #ff8800 90%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .lead {
-      font-size: 0.95rem;
+      font-size: 1.05rem;
       color: var(--text-muted);
-      max-width: 32rem;
+      max-width: 36rem;
+      line-height: 1.6;
     }
 
     .hero-actions {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
-      margin: 20px 0 14px;
+      align-items: center;
+      gap: 14px;
+      margin: 26px 0 16px;
     }
 
     .btn-primary {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 10px 16px;
+      gap: 8px;
+      padding: 13px 24px;
       border-radius: 999px;
       border: none;
-      background-color: var(--accent);
+      background: linear-gradient(135deg, #ffcc00, #ffb300);
       color: #000;
-      font-weight: 600;
-      font-size: 0.92rem;
+      font-weight: 700;
+      font-size: 0.96rem;
       cursor: pointer;
+      box-shadow: 0 4px 20px rgba(255, 204, 0, 0.35);
+      transition: transform 0.15s ease, filter 0.15s ease;
     }
 
     .btn-primary:hover {
-      filter: brightness(1.05);
+      transform: translateY(-1px);
+      filter: brightness(1.06);
       text-decoration: none;
     }
 
+    .btn-primary svg {
+      width: 18px;
+      height: 18px;
+    }
+
     .btn-ghost {
-      padding: 9px 14px;
+      padding: 12px 20px;
       border-radius: 999px;
       border: 1px solid var(--border-subtle);
-      background-color: transparent;
-      font-size: 0.9rem;
-      color: var(--text-muted);
+      background-color: var(--surface-soft);
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--text);
       cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn-ghost:hover {
+      background-color: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.2);
+      text-decoration: none;
     }
 
     .meta-note {
-      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
       color: var(--text-muted);
     }
 
-    /* Timer card “mock” – styled similar to your app */
-    .timer-shell {
-      background-color: var(--surface);
+    .meta-note-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-emerald);
+    }
+
+    /* Live Combo Callout Banner (Highlights 2.0 Feature) */
+    .callout-spotlight {
+      background: linear-gradient(135deg, rgba(255, 204, 0, 0.08) 0%, rgba(20, 20, 28, 0.9) 100%);
+      border: 1px solid var(--border-accent);
       border-radius: var(--radius-xl);
-      padding: 18px 16px;
-      border: 1px solid var(--border-subtle);
-    }
-
-    .timer-header {
+      padding: 24px;
+      margin: 32px 0 10px;
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 18px;
-      font-size: 0.8rem;
-      color: var(--text-muted);
+      gap: 20px;
     }
 
-    .timer-title {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
+    .callout-info {
+      max-width: 28rem;
     }
 
-    .timer-app-name {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-
-    .timer-status {
-      font-size: 0.9rem;
-      font-weight: 600;
-    }
-
-    .timer-main {
-      background-color: #181818;
-      border-radius: 24px;
-      padding: 22px 16px;
-      text-align: center;
-    }
-
-    .timer-main-time {
-      font-size: 3.2rem;
-      letter-spacing: -0.08em;
-      line-height: 1;
-    }
-
-    .timer-main-sub {
-      margin-top: 6px;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    .timer-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 16px;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    .timer-rounds {
-      display: flex;
-      gap: 4px;
-      align-items: baseline;
-    }
-
-    .timer-rounds-label {
-      color: var(--text-muted);
-    }
-
-    .timer-rounds-value {
-      font-weight: 500;
-    }
-
-    .timer-start-pill {
-      padding: 8px 14px;
-      border-radius: 999px;
-      background-color: var(--accent-soft);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.78rem;
-      color: var(--accent);
-    }
-
-    section {
-      margin-top: 38px;
-    }
-
-    h2 {
+    .callout-info h3 {
       font-size: 1.15rem;
-      letter-spacing: -0.03em;
-      margin-bottom: 8px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #fff;
     }
 
-    .section-text {
-      font-size: 0.9rem;
+    .callout-info p {
+      font-size: 0.88rem;
       color: var(--text-muted);
-      max-width: 40rem;
+      line-height: 1.5;
     }
 
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
-      margin-top: 18px;
+    .combo-pill-mock {
+      background: #000;
+      border: 2px solid #ffcc00;
+      border-radius: 16px;
+      padding: 12px 24px;
+      text-align: center;
+      box-shadow: 0 0 24px rgba(255, 204, 0, 0.25);
     }
 
-    .feature-card {
-      background-color: var(--surface);
-      border-radius: var(--radius-lg);
-      padding: 14px 14px 16px;
-      border: 1px solid var(--border-subtle);
-      font-size: 0.86rem;
+    .combo-word-spoken {
+      color: #ffcc00;
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
     }
 
-    .feature-title {
-      font-weight: 500;
-      margin-bottom: 4px;
-    }
-
-    .feature-body {
+    .combo-subtext {
+      font-size: 0.72rem;
       color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 4px;
     }
 
-    .footer {
-      margin-top: 34px;
-      padding-top: 16px;
-      border-top: 1px solid var(--border-subtle);
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-
-    .footer-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    /* Gallery styles */
-    /* Section sizing: give gallery similar vertical room as feature section */
+    /* Interactive Screenshot Carousel Gallery */
     .gallery-section {
-      margin-top: 28px;
-      min-height: 360px; /* provides room similar to the features area */
+      margin: 44px 0 24px;
+    }
+
+    .gallery-header {
       display: flex;
-      flex-direction: column;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .gallery-header h2 {
+      font-size: 1.28rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .gallery-hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
     }
 
     .gallery-grid {
       display: flex;
-      gap: 12px;
-      margin-top: 14px;
+      gap: 16px;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
-      padding-bottom: 6px;
-      scroll-snap-type: x proximity;
-      align-items: center; /* vertically center items within the section */
-      flex: 1 1 auto;
+      padding-bottom: 16px;
+      scroll-snap-type: x mandatory;
     }
 
     .gallery-item {
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
-      border-radius: 12px;
+      flex: 0 0 240px;
+      background: var(--surface);
+      border-radius: var(--radius-lg);
       overflow: hidden;
       border: 1px solid var(--border-subtle);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 6px;
-      flex: 0 0 260px; /* fixed item width so items lay out horizontally */
+      cursor: pointer;
       scroll-snap-align: start;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 204, 0, 0.35);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6);
     }
 
     .gallery-item img {
       width: 100%;
       height: auto;
       display: block;
-      object-fit: contain;
+      object-fit: cover;
     }
 
-    /* Make images respect the gallery height: limit image max-height so items don't overflow */
-    .gallery-item img {
-      max-height: calc(360px - 28px); /* section min-height minus paddings */
-    }
-
-    /* thin horizontal scrollbar styling for WebKit */
+    /* Thin styled scrollbar */
     .gallery-grid::-webkit-scrollbar {
-      height: 9px;
+      height: 8px;
+    }
+
+    .gallery-grid::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 4px;
     }
 
     .gallery-grid::-webkit-scrollbar-thumb {
-      background: rgba(255,255,255,0.06);
-      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.14);
+      border-radius: 4px;
+    }
+
+    .gallery-grid::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 204, 0, 0.4);
+    }
+
+    /* Features Grid */
+    .features-section {
+      margin-top: 48px;
+    }
+
+    .features-header {
+      margin-bottom: 22px;
+    }
+
+    .features-header h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 22px 20px;
+      border: 1px solid var(--border-subtle);
+      transition: border-color 0.2s ease;
+    }
+
+    .feature-card:hover {
+      border-color: rgba(255, 255, 255, 0.16);
+    }
+
+    .feature-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      font-size: 1.1rem;
+    }
+
+    .feature-title {
+      font-size: 1.02rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #fff;
+    }
+
+    .feature-body {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Fullscreen Image Lightbox Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-content {
+      max-width: 90vw;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .modal-content img {
+      max-width: 100%;
+      max-height: 85vh;
+      border-radius: var(--radius-lg);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.8);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: -42px;
+      right: 0;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.8rem;
+      cursor: pointer;
+      opacity: 0.7;
+    }
+
+    .modal-close:hover {
+      opacity: 1;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 56px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
     }
   </style>
 </head>
@@ -392,130 +519,182 @@
   <div class="page">
     <header>
       <div class="brand">
-        <!-- Logo image (falls back to letter if image fails) -->
-          <div class="brand-mark"><img src="images/Logo.png" alt="PunchPOW logo" /></div>
+        <div class="brand-mark"><img src="images/Logo.png" alt="PunchPOW logo" /></div>
         <div>
-          <div class="brand-text-main">PunchPOW</div>
-          <div class="brand-text-sub">Boxing · Kickboxing · HIIT Timer</div>
+          <div class="brand-text-main">
+            PunchPOW
+            <span class="brand-version-badge">v2.0</span>
+          </div>
+          <div class="brand-text-sub">AI Combat Cornerman &amp; Round Timer</div>
         </div>
       </div>
-      <div class="chip">Available on iPhone &amp; iPad</div>
+      <div class="chip">Optimized for iPhone &amp; iPad Pro</div>
     </header>
 
     <main>
-
-      <!-- Left side: text -->
-      <div>
-        <div class="eyebrow">TRAINING TIMER</div>
+      <!-- Hero -->
+      <section class="hero">
+        <div class="eyebrow-badge">🥊 Audio Combat Coach Inside</div>
         <h1>
-          Round timer for<br />
-          <span class="tagline-accent">fighters who hate fiddling.</span>
+          Your AI Combat Cornerman.<br />
+          <span class="tagline-accent">Dynamic punch callouts in real time.</span>
         </h1>
         <p class="lead">
-          PunchPOW keeps your rounds, rest, and combos organized so you can stay
-          focused on the bag, not the screen. Build boxing and kickboxing
-          workouts, follow ready-made routines, and see every second clearly.
+          PunchPOW 2.0 brings an authentic boxing coach directly to your gym bag. Train with real-time audio punch combination callouts, live word highlighting, hands-free Siri shortcuts, and tailored multi-round fight workouts.
         </p>
 
         <div class="hero-actions">
-          <!-- Replace # with your App Store link when ready -->
-          <a href="https://apps.apple.com/us/app/punchpow/id6755253726" class="btn-primary">View on the App&nbsp;Store</a>
-          <a
-            href="https://vuqtran88.github.io/punchpow-support/index.html"
-            class="btn-ghost"
-          >
+          <a href="https://apps.apple.com/us/app/punchpow/id6755253726" class="btn-primary" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.92-2.85-.9.04-2 .6-2.65 1.35-.58.66-1.08 1.73-.95 2.76 1.01.08 2.05-.51 2.68-1.26z"/>
+            </svg>
+            Download on App&nbsp;Store
+          </a>
+          <a href="https://vuqtran88.github.io/punchpow-support/index.html" class="btn-ghost" target="_blank" rel="noopener">
             Support &amp; FAQ
           </a>
         </div>
 
-        <p class="meta-note">
-          No account required. Open the app, pick a workout, and start your
-          first round in seconds.
-        </p>
-        <!-- Screenshots gallery (restored) -->
-        <section class="gallery-section" aria-labelledby="gallery-title">
-          <h2 id="gallery-title">Screenshots</h2>
-          <p class="section-text">Tap an image to open full size.</p>
-          <div id="gallery" class="gallery-grid" aria-live="polite"></div>
-        </section>
-      </div>
+        <div class="meta-note">
+          <span class="meta-note-dot"></span>
+          <span>Free to download · Works offline · Background music audio ducking</span>
+        </div>
+      </section>
 
+      <!-- 2.0 Spotlight Feature: Combo Callouts -->
+      <section class="callout-spotlight">
+        <div class="callout-info">
+          <h3>Interactive Voice Coach Callouts</h3>
+          <p>
+            Never drill alone. PunchPOW dynamically announces combinations like <em>"1 - 2 - Roll - 2"</em> at adjustable speeds and cadences while highlighting active punch movements on screen in glowing yellow.
+          </p>
+        </div>
+        <div class="combo-pill-mock">
+          <div class="combo-word-spoken">JAB · CROSS · ROLL</div>
+          <div class="combo-subtext">Active Live Highlighting</div>
+        </div>
+      </section>
+
+      <!-- Screenshots gallery -->
+      <section class="gallery-section" aria-labelledby="gallery-title">
+        <div class="gallery-header">
+          <h2 id="gallery-title">App Highlights</h2>
+          <span class="gallery-hint">Tap to expand full screen</span>
+        </div>
+        <div id="gallery" class="gallery-grid" aria-live="polite"></div>
+      </section>
     </main>
 
-    <section>
-      <h2>Made for real training sessions.</h2>
-      <p class="section-text">
-        Whether you’re shadowboxing at home, working the heavy bag, or mixing in
-        HIIT intervals, PunchPOW gives you a simple structure that’s easy to see
-        from across the room.
-      </p>
+    <!-- Detailed Features -->
+    <section class="features-section">
+      <div class="features-header">
+        <h2>Built for fighters who demand focus.</h2>
+        <p class="section-text" style="color: var(--text-muted); font-size: 0.95rem;">
+          Everything you need for shadowboxing, heavy bag workouts, kickboxing drills, and HIIT circuits.
+        </p>
+      </div>
 
       <div class="features-grid">
         <div class="feature-card">
-          <div class="feature-title">Workout planner</div>
+          <div class="feature-icon" style="background: rgba(255, 204, 0, 0.15); color: #ffcc00;">🥊</div>
+          <div class="feature-title">Dynamic Combo Coach</div>
           <p class="feature-body">
-            Create sessions with Round, Rest, and Get Ready segments. Save your
-            favorites and reuse them like a personal coach.
+            Audio coach announces combos during active rounds. Word-by-word real-time synchronization helps you lock into the rhythm.
           </p>
         </div>
+
         <div class="feature-card">
-          <div class="feature-title">Preset routines</div>
+          <div class="feature-icon" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">🗣️</div>
+          <div class="feature-title">Hands-Free Siri Voice Control</div>
           <p class="feature-body">
-            Start fast with built-in workouts for bag work, shadowboxing, and
-            conditioning. No setup required.
+            Keep your gloves wrapped. Say <em>"Hey Siri, start my timer in PunchPOW"</em> or <em>"skip this round"</em> without touching your device.
           </p>
         </div>
+
         <div class="feature-card">
-          <div class="feature-title">Clear, bold timer</div>
+          <div class="feature-icon" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">📋</div>
+          <div class="feature-title">Custom Workout Builder</div>
           <p class="feature-body">
-            High-contrast layout and Big Screen mode make it easy to track time
-            without squinting or walking back to your phone.
+            Build custom interval workouts with Get Ready, Round, and Rest segments. Tailor specific strike combinations for every round.
           </p>
         </div>
+
         <div class="feature-card">
-          <div class="feature-title">Siri support</div>
+          <div class="feature-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">🎙️</div>
+          <div class="feature-title">6 International Coach Personas</div>
           <p class="feature-body">
-            Use Siri to start, pause, resume, or skip rounds when your hands are
-            wrapped and you can’t touch the screen.
+            Choose from Male &amp; Female cornermen in US, British, and Australian accents with customizable speech rate and combo frequency.
           </p>
         </div>
+
         <div class="feature-card">
-          <div class="feature-title">Sound &amp; haptics</div>
+          <div class="feature-icon" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">📺</div>
+          <div class="feature-title">Big Screen &amp; TV Mode</div>
           <p class="feature-body">
-            Clean audio and haptic cues help you feel round transitions so you
-            can stay in rhythm.
+            High-contrast athletic typography visible from across the gym. Propped on your bag or mirrored to a screen, time is crystal clear.
           </p>
         </div>
+
         <div class="feature-card">
-          <div class="feature-title">Premium when you need it</div>
+          <div class="feature-icon" style="background: rgba(239, 68, 68, 0.15); color: #ef4444;">🎵</div>
+          <div class="feature-title">Music-Friendly Background Audio</div>
           <p class="feature-body">
-            Upgrade from inside the app to unlock more workouts and advanced
-            planning options. The core experience is available to try first.
+            Blast Spotify or Apple Music while you train. PunchPOW smoothly ducks background music so you hear chimes and coach cues clearly.
           </p>
         </div>
       </div>
     </section>
 
-    
-
+    <!-- Footer -->
     <footer class="footer">
       <div>
         © <span id="year"></span> Vu Quang Tran · PunchPOW
       </div>
       <div class="footer-links">
-        <a href="https://vuqtran88.github.io/punchpow-support/index.html"
-          >Support</a
-        >
-        <a href="https://vuqtran88.github.io/punchpow-privacy/index.html"
-          >Privacy</a
-        >
+        <a href="https://apps.apple.com/us/app/punchpow/id6755253726" target="_blank" rel="noopener">App Store</a>
+        <a href="https://vuqtran88.github.io/punchpow-support/index.html" target="_blank" rel="noopener">Support &amp; FAQ</a>
+        <a href="https://vuqtran88.github.io/punchpow-privacy/index.html" target="_blank" rel="noopener">Privacy Policy</a>
       </div>
     </footer>
   </div>
 
+  <!-- Lightbox Modal -->
+  <div id="lightbox" class="modal-overlay" aria-hidden="true" role="dialog">
+    <div class="modal-content">
+      <button class="modal-close" aria-label="Close dialog">&times;</button>
+      <img id="modal-img" src="" alt="Full size preview" />
+    </div>
+  </div>
+
   <script>
-    // set year
+    // Update year
     document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Lightbox modal logic
+    const lightbox = document.getElementById('lightbox');
+    const modalImg = document.getElementById('modal-img');
+    const closeBtn = document.querySelector('.modal-close');
+
+    function openModal(src, alt) {
+      modalImg.src = src;
+      modalImg.alt = alt || 'Preview';
+      lightbox.classList.add('active');
+      lightbox.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeModal() {
+      lightbox.classList.remove('active');
+      lightbox.setAttribute('aria-hidden', 'true');
+      modalImg.src = '';
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
 
     // Render gallery from images/list.json
     (function () {
@@ -533,20 +712,19 @@
           const item = document.createElement('div');
           item.className = 'gallery-item';
 
-          // Encode filename for URL safety
           const encoded = encodeURIComponent(name).replace(/%2F/g, '/');
           const img = document.createElement('img');
-          img.src = `images/${encoded}`;
-          img.alt = name;
+          img.src = "images/" + encoded;
+          img.alt = name.replace(/card_\d+_|\.png/g, '').replace(/_/g, ' ');
           img.loading = 'lazy';
 
-          // Clicking opens full-size in new tab
-          img.style.cursor = 'pointer';
-          img.addEventListener('click', () => {
-            window.open(img.src, '_blank');
+          item.appendChild(img);
+
+          // Click opens lightbox
+          item.addEventListener('click', () => {
+            openModal(img.src, img.alt);
           });
 
-          item.appendChild(img);
           frag.appendChild(item);
         });
 
@@ -554,7 +732,6 @@
         galleryEl.appendChild(frag);
       }
 
-      // Try fetching manifest; if that fails, fall back to a small inline attempt
       fetch(manifestUrl)
         .then((res) => {
           if (!res.ok) throw new Error('manifest not found');
@@ -562,9 +739,15 @@
         })
         .then((list) => renderList(list))
         .catch(() => {
-          // Fallback: try a few common screenshot names (best-effort)
-          const fallback = [];
-          renderList(fallback);
+          // Fallback if fetch fails
+          renderList([
+            "card_01_Combo_Callout_Coach.png",
+            "card_02_Training_Hub.png",
+            "card_03_Create_Custom_Workout.png",
+            "card_04_Workout_Preview.png",
+            "card_05_Coach_Settings.png",
+            "card_06_Timer.png"
+          ]);
         });
     })();
   </script>
